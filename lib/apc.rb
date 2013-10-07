@@ -75,7 +75,7 @@ class ApcSnmp
 
   ## Change the name of a PDU
   def setPDUName (name)
-    return writeValue("sPDUIdentName.0", SNMP::OctetString.new(name))
+    return writeValue("rPDUIdentName.0", SNMP::OctetString.new(name))
   end
 
   ## Get the serial number of a PDU
