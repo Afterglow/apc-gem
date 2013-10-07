@@ -70,7 +70,7 @@ class ApcSnmp
 
   ## Get the name of the PDU
   def getPDUName ()
-    return readValue("sPDUIdentName.0")
+    return readValue("rPDUIdentName.0")
   end
 
   ## Change the name of a PDU
