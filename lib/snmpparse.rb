@@ -1,5 +1,7 @@
 #!/usr/local/bin/ruby
 
+## Shamelessly copied and pasted from http://www.cuddletech.com/blog/pivot/entry.php?id=588
+
 ## SNMP::MIB.open  --> Module::Class.method
 ## ^      ^     ^
 ## Module Class Def (Method)
