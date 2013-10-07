@@ -78,6 +78,16 @@ class ApcSnmp
     return writeValue("sPDUIdentName.0", SNMP::OctetString.new(name))
   end
 
+  ## Get the serial number of a PDU
+  def getSerialNumber ()
+    return readValue("rPDUIdentSerialNumber.0")
+  end
+
+  ## Get the model number of a PDU
+  def getModelNumber ()
+    return readValue("rPDUIdentModelNumber.0")
+  end
+
   ## Get the firmware revision of the PDU
   def getFirmwareVersion ()
     return readValue("sPDUIdentFirmwareRev.0")
