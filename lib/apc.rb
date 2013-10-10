@@ -98,6 +98,23 @@ class ApcSnmp
     return readValue("rPDULoadStatusLoad.1")
   end
 
+  ## Get number of phases on this PDU
+  def getNumPhases ()
+    return readValue("rPDULoadDevNumPhases.0")
+  end
+
+  ## Get the load on a phase return load, max load and warning load
+  def getLoadDetail(phase)
+    load = Hash.new
+    loaddata = readValue(["rPDULoadStatusLoad.#{phase}",
+                          "rPDULoadPhaseConfigOverloadThreshold.#{phase}",
+                          "rPDULoadPhaseConfigNearOverloadThreshold.#{phase}"])
+    load['used'] = loaddata[0]
+    load['max'] = loaddata[1]
+    load['warn'] = loaddata[2]
+    return load
+  end
+
   ## Turn an outlet off
   def outletOff (outlet)
     return writeValue("sPDUOutletCtl.#{outlet}", SNMP::Integer.new(2))
