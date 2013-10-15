@@ -4,8 +4,7 @@ class ApcSnmp
   def initialize (host, community='public', write_community='private')
     @manager = SNMP::Manager.new( :host => host, :version => :SNMPv1, :community => community, :write_community => write_community)
     @manager.load_module("PowerNet-MIB")
-    @mib = SNMP::MIB.new
-    @mib.load_module("PowerNet-MIB")
+    @manager.load_module("RFC1213-MIB")
   end
 
   ## Read a single OID or an array of OIDs over SNMP
@@ -101,6 +100,11 @@ class ApcSnmp
   ## Get number of phases on this PDU
   def getNumPhases ()
     return readValue("rPDULoadDevNumPhases.0")
+  end
+
+  ## Get the location of the PDU
+  def getLocation ()
+    return readValue("RFC1213-MIB::sysLocation.0")
   end
 
   ## Get the load on a phase return load, max load and warning load
