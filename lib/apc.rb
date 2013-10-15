@@ -113,7 +113,7 @@ class ApcSnmp
     loaddata = readValue(["rPDULoadStatusLoad.#{phase}",
                           "rPDULoadPhaseConfigOverloadThreshold.#{phase}",
                           "rPDULoadPhaseConfigNearOverloadThreshold.#{phase}"])
-    load['used'] = loaddata[0]/10 # Is reported as 2.9amps being 29
+    load['used'] = loaddata[0].to_i/10 # Is reported as 2.9amps being 29
     load['max'] = loaddata[1]
     load['warn'] = loaddata[2]
     return load
