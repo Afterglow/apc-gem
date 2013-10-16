@@ -5,6 +5,9 @@ class ApcSnmp
     @manager = SNMP::Manager.new( :host => host, :version => :SNMPv1, :community => community, :write_community => write_community)
     @manager.load_module("PowerNet-MIB")
     @manager.load_module("RFC1213-MIB")
+    @mib = SNMP::MIB.new
+    @mib.load_module("PowerNet-MIB")
+    @mib.load_module("RFC1213-MIB")
   end
 
   ## Read a single OID or an array of OIDs over SNMP
