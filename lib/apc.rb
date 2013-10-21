@@ -1,13 +1,24 @@
 require 'snmp'
 
+class NullValueException < StandardError
+end
+
+class NonExistentPortException < StandardError
+end
+
 class ApcSnmp
   def initialize (host, community='public', write_community='private')
+    @mib = SNMP::MIB.new
+    unless SNMP::MIB.import_supported?
+      puts "This script requires access to smidump to run"
+      exit(1)
+    end
+    SNMP::MIB.import_module(File.dirname(__FILE__) + "/powernet409.mib")
+    @mib.load_module("PowerNet-MIB")
+    @mib.load_module("RFC1213-MIB")
     @manager = SNMP::Manager.new( :host => host, :version => :SNMPv1, :community => community, :write_community => write_community)
     @manager.load_module("PowerNet-MIB")
     @manager.load_module("RFC1213-MIB")
-    @mib = SNMP::MIB.new
-    @mib.load_module("PowerNet-MIB")
-    @mib.load_module("RFC1213-MIB")
   end
 
   ## Read a single OID or an array of OIDs over SNMP
@@ -18,6 +29,7 @@ class ApcSnmp
       data.push(varbind.value.to_s)
     end
     if data.length == 1
+      raise NullValueException if data[0] == 'Null'      
       return data[0]
     else
       return data
@@ -47,7 +59,11 @@ class ApcSnmp
       end
       return readValue(outletList)
     else
-      return readValue("sPDUOutletCtl.#{outlet}")
+      begin
+        return readValue("sPDUOutletCtl.#{outlet}")
+      rescue NullValueException
+        raise NonExistentPortException
+      end
     end
   end
 
@@ -61,7 +77,11 @@ class ApcSnmp
       end
       return readValue(outletList)
     else
-      return readValue("sPDUOutletName.#{outlet}")
+      begin
+        return readValue("sPDUOutletName.#{outlet}")
+      rescue NullValueException
+        raise NonExistentPortException
+      end
     end
   end
 
@@ -133,3 +153,5 @@ class ApcSnmp
     return writeValue("sPDUOutletCtl.#{outlet}", SNMP::Integer.new(1))
   end
 end
+
+ApcSnmp.new("10.8.35.144")
