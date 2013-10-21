@@ -20,6 +20,7 @@ class ApcSnmp
                                   :write_community => write_community,
                                   :mib_dir => mibdir,
                                   :mib_modules => [ "PowerNet-MIB", "RFC1213-MIB" ])
+  end
 
   ## Read a single OID or an array of OIDs over SNMP
   def readValue (oid)

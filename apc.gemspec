@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name      = 'apc'
-  s.version   = '0.0.12'
+  s.version   = '0.0.13'
   s.date      = '2013-10-21'
   s.summary   = 'Control an APC PDU by SNMP'
   s.authors   = '["Paul Thomas"]'
