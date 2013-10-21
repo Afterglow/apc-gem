@@ -6,19 +6,20 @@ end
 class NonExistentPortException < StandardError
 end
 
+
 class ApcSnmp
 
+  MIBDIR = File.dirname(__FILE__) + "/mibs"
+
   def initialize (host, community='public', write_community='private')
-    mibdir = File.dirname(__FILE__) + "/mibs"
     @mib = SNMP::MIB.new
-    @mib.load_module("PowerNet-MIB", mibdir)
-    @mib.load_module("RFC1213-MIB", mibdir)
-    puts SNMP::MIB.list_imported(mibdir)
+    @mib.load_module("PowerNet-MIB", MIBDIR)
+    @mib.load_module("RFC1213-MIB", MIBDIR)
     @manager = SNMP::Manager.new( :host => host,
                                   :version => :SNMPv1,
                                   :community => community,
                                   :write_community => write_community,
-                                  :mib_dir => mibdir,
+                                  :mib_dir => MIBDIR,
                                   :mib_modules => [ "PowerNet-MIB", "RFC1213-MIB" ])
   end
 
